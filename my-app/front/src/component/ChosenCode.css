@@ -1,0 +1,44 @@
+.chosenCode {
+  position: relative;
+  display: flex;
+  background-color: #000;
+  width: 110vh;
+  height: 85vh;
+  color: #fff;
+  padding: 1rem;
+  flex-direction: column;
+}
+
+.chosenCode_title {
+  color: #fff;
+  flex: 96%;
+  text-decoration: underline;
+}
+
+.chosenCode_editBtn {
+  flex: 4%;
+  height: 50%;
+  box-shadow: 0.35rem 0.25rem 0.5rem rgb(131, 125, 125);
+  border-radius: 1rem;
+}
+
+.chosenCode_detailes {
+  display: flex;
+  flex: 10%;
+  float: right;
+}
+
+.chosenCode_code {
+  flex: 90%;
+  text-align: left;
+}
+.chosenCode_code_edit {
+  flex: 90%;
+  text-align: start;
+  padding: 1rem;
+  box-sizing: border-box;
+  border: 0.5rem solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 2rem;
+}
