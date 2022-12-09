@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./ChosenCode.css";
 // import { Link } from "react-router-dom";
@@ -8,6 +8,16 @@ function ChosenCode(props) {
   const code = props.data.find((p) => p.id == index);
   const [editMode, setEditMode] = useState(false);
   const [currentCode, setCurrentCode] = useState(code.code);
+
+  // useEffect(() => {
+  //   const requestOption = {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   };
+  //   fetch(`http://localhost:5000/code/get/`);
+  // }, []);
 
   const editHandler = function () {
     setEditMode(!editMode);

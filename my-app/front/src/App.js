@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import ChosenCode from "./component/ChosenCode";
@@ -29,6 +29,17 @@ const DUMMY_ARRAY = [
 ];
 
 function App() {
+  useEffect(() => {
+    const requestOption = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const data =fetch("http://localhost:5000/code/getList", requestOption);
+    console.log(data);
+  }, []);
+
   return (
     <div className="App">
       <Router>
