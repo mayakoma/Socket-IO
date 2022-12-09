@@ -7,6 +7,7 @@ function ChosenCode(props) {
   const index = useParams().code;
   const code = props.data.find((p) => p.id == index);
   const [editMode, setEditMode] = useState(false);
+  const [currentCode, setCurrentCode] = useState(code.code);
 
   const editHandler = function () {
     setEditMode(!editMode);
@@ -22,12 +23,12 @@ function ChosenCode(props) {
           <button className="chosenCode_editBtn" onClick={editHandler}></button>
         </div>
         {!editMode ? (
-          <div className="chosenCode_code">{code.code}</div>
+          <div className="chosenCode_code">{currentCode}</div>
         ) : (
           <input
             className="chosenCode_code_edit"
             type="textarea"
-            defaultValue={code.code}
+            defaultValue={currentCode}
           />
         )}
       </div>

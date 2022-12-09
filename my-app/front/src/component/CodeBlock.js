@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import openSocket from "socket.io-client";
+
 import "./CodeBlock.css";
 
 function CodeBlock(props) {
