@@ -9,13 +9,25 @@ wss.on("connection", (ws) => {
 */
 
 const express = require("express");
+const http = require("http");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-mongoose.set("strictQuery", false);
 const HttpError = require("./model/httpError");
 const codeRoute = require("./routes/code-route");
+const { Server } = require("socket.io");
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+mongoose.set("strictQuery", false);
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
@@ -48,10 +60,20 @@ mongoose
     "mongodb+srv://mayakoma:mayakoma7@cluster0.wkzoen0.mongodb.net/code?retryWrites=true&w=majority"
   )
   .then(() => {
-    const server = app.listen(5000, () => console.log("listen  port 5000"));
-    const io = require("socket.io")(server);
+    server.listen(5000, () => console.log("listen  port 5000"));
     io.on("connection", (socket) => {
-      console.log("c c");
+      console.log(`c connected ${socket.id} `);
+
+      socket.on("join_code", (data) => {
+        socket.join(data);
+        console.log(`user with ID ${socket.id} joined code-room ${data}`);
+      });
+      socket.on("send_code", (data) => {
+        socket.to(data.room).emit("receive_code", data);
+      });
+      socket.on("disconnect", () => {
+        console.log(`c disconnected ${socket.id} `);
+      });
     });
   })
   .catch((err) => console.log(err));

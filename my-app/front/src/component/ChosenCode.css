@@ -11,15 +11,19 @@
 
 .chosenCode_title {
   color: #fff;
-  flex: 96%;
+  flex: 92%;
   text-decoration: underline;
 }
 
 .chosenCode_editBtn {
-  flex: 4%;
-  height: 50%;
+  flex: 8%;
+  height: 70%;
   box-shadow: 0.35rem 0.25rem 0.5rem rgb(131, 125, 125);
   border-radius: 1rem;
+  padding: 0.2rem;
+}
+.chosenCode_editBtn:hover {
+  background-color: #ccc;
 }
 
 .chosenCode_detailes {

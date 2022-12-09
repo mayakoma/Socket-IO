@@ -18,7 +18,16 @@
   background-color: rgb(167, 249, 222);
   text-align: center;
   padding: 0.5rem;
+  text-decoration: none;
+  color: #000;
 }
+a {
+  text-decoration: none;
+}
+.codeBlock_title:hover {
+  background-color: rgba(52, 139, 110, 0.824);
+}
+
 .codeBlock_code {
   flex: 80%;
   width: 100%;
@@ -26,4 +35,5 @@
   color: #fff;
   font-size: medium;
   padding: 0.5rem;
+  text-decoration: none;
 }

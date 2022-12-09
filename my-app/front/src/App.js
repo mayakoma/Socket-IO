@@ -1,54 +1,45 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { io } from "socket.io-client";
 
 import ChosenCode from "./component/ChosenCode";
+
 import List from "./component/List";
 import "./App.css";
 
-const DUMMY_ARRAY = [
-  {
-    id: "1",
-    title: "code 1",
-    code: "blabla",
-  },
-  {
-    id: "2",
-    title: "code 2",
-    code: "blabla",
-  },
-  {
-    id: "3",
-    title: "code 3",
-    code: "blabla",
-  },
-  {
-    id: "4",
-    title: "code 4",
-    code: "blabla",
-  },
-];
+const socket = io.connect("http://localhost:5000"); // client-socket
 
 function App() {
+  const [list, setList] = useState([]);
+
+  const getList = async function () {
+    fetch("http://localhost:5000/code/getList")
+      .then((res) => (res.ok ? res.json() : { list: [] }))
+      .then((data) => {
+        setList(data.list);
+      });
+  };
   useEffect(() => {
-    const requestOption = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const data =fetch("http://localhost:5000/code/getList", requestOption);
-    console.log(data);
+    getList();
   }, []);
 
   return (
-    <div className="App">
-      <Router>
+    <Router>
+      <div className="App">
         <Routes>
-          <Route path="/" element={<List items={DUMMY_ARRAY} />} />
-          <Route path="/:code" element={<ChosenCode data={DUMMY_ARRAY} />} />
+          <Route
+            path="/"
+            exact
+            element={<List key="2" items={[list, socket]} />}
+          />
+          <Route
+            path="/code/:codeId/:i"
+            exact
+            element={<ChosenCode key="1" socket={socket} data={list} />}
+          />
         </Routes>
-      </Router>
-    </div>
+      </div>
+    </Router>
   );
 }
 

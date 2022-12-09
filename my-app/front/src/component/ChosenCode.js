@@ -1,26 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
 import "./ChosenCode.css";
-// import { Link } from "react-router-dom";
 
 function ChosenCode(props) {
-  const index = useParams().code;
-  const code = props.data.find((p) => p.id == index);
+  const indexCode = useParams().codeId;
+  const indexRooms = useParams().i;
   const [editMode, setEditMode] = useState(false);
-  const [currentCode, setCurrentCode] = useState(code.code);
+  const [canEdit, setCanEdit] = useState(false);
+  const [currentCode, setCurrentCode] = useState("");
+  const [receiveCode, setReceiveCode] = useState("");
 
-  // useEffect(() => {
-  //   const requestOption = {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   };
-  //   fetch(`http://localhost:5000/code/get/`);
-  // }, []);
+  const getList = async function (index) {
+    fetch(`http://localhost:5000/code/get/${index}`)
+      .then((res) => (res.ok ? res.json() : { currentCode: "" }))
+      .then((data) => {
+        setCurrentCode(data.code);
+        setReceiveCode(data.code.code);
+      });
+  };
+  useEffect(() => {
+    getList(indexCode);
+  }, []);
+
+  useEffect(() => {
+    props.socket.on("receive_code", (data) => {
+      setReceiveCode(data.code);
+    });
+  }, [props.socket, currentCode]);
 
   const editHandler = function () {
     setEditMode(!editMode);
+  };
+  const saveCode = async function () {
+    if (currentCode.code !== "") {
+      const data = {
+        room: indexCode,
+        code: currentCode.code,
+      };
+      await props.socket.emit("send_code", data);
+    }
   };
 
   return (
@@ -28,17 +47,30 @@ function ChosenCode(props) {
       <div className="chosenCode">
         <div className="chosenCode_detailes">
           <h2 className="chosenCode_title">
-            {`You are working on: ${code.title}`}
+            {`You are working on: ${currentCode.title}`}
           </h2>
-          <button className="chosenCode_editBtn" onClick={editHandler}></button>
+          {canEdit ? (
+            <button className="chosenCode_editBtn" onClick={editHandler}>
+              start codding
+            </button>
+          ) : null}
         </div>
         {!editMode ? (
-          <div className="chosenCode_code">{currentCode}</div>
+          <div className="chosenCode_code">
+            {receiveCode.split(";").map((line) => {
+              const l = `${line};`;
+              return <h4>{`${l}`}</h4>;
+            })}
+          </div>
         ) : (
-          <input
+          <textarea
             className="chosenCode_code_edit"
-            type="textarea"
-            defaultValue={currentCode}
+            type="text"
+            defaultValue={currentCode.code}
+            onChange={(event) => {
+              currentCode.code = event.target.value;
+              saveCode();
+            }}
           />
         )}
       </div>
