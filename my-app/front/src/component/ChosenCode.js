@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import hljs from "highlight.js";
-import "../../node_modules/highlight.js/styles/base16/circus.css";
+import LoadingSpinner from "./LoadingSpinner";
 
+import "../../node_modules/highlight.js/styles/base16/circus.css";
 import "./ChosenCode.css";
 
 function ChosenCode(props) {
@@ -13,15 +14,18 @@ function ChosenCode(props) {
   const [currentCode, setCurrentCode] = useState("");
   const [receiveCode, setReceiveCode] = useState("");
   const [editTxt, setEditTxt] = useState("edit");
+  const [isLoading, setIsLoading] = useState(true);
 
   // get the code's details from the server
   const getList = async function (index) {
+    setIsLoading(true);
     fetch(`http://localhost:5000/code/get/${index}`)
       .then((res) => (res.ok ? res.json() : { currentCode: "" }))
       .then((data) => {
         setCurrentCode(data.code);
         setReceiveCode(data.code.code);
       });
+    setIsLoading(false);
   };
   // when the page loaded asked for the code's details
   useEffect(() => {
@@ -83,37 +87,43 @@ function ChosenCode(props) {
 
   return (
     <>
-      <Link to="/">
-        <button className="chosenCode_backBtn" onClick={removeClient}>
-          back
-        </button>
-      </Link>
-      <div className="chosenCode">
-        <div className="chosenCode_detailes">
-          <h2 className="chosenCode_title">{` ${currentCode.title}`}</h2>
-          {canEdit ? (
-            <button className="chosenCode_editBtn" onClick={editHandler}>
-              {`${editTxt}`}
+      {isLoading ? (
+        <LoadingSpinner asOverlay />
+      ) : (
+        <>
+          <Link to="/">
+            <button className="chosenCode_backBtn" onClick={removeClient}>
+              back
             </button>
-          ) : null}
-        </div>
+          </Link>
+          <div className="chosenCode">
+            <div className="chosenCode_detailes">
+              <h2 className="chosenCode_title">{` ${currentCode.title}`}</h2>
+              {canEdit ? (
+                <button className="chosenCode_editBtn" onClick={editHandler}>
+                  {`${editTxt}`}
+                </button>
+              ) : null}
+            </div>
 
-        {!editMode ? (
-          <div className="chosenCode_code">
-            <pre>{receiveCode}</pre>
+            {!editMode ? (
+              <div className="chosenCode_code">
+                <pre>{receiveCode}</pre>
+              </div>
+            ) : (
+              <textarea
+                className="chosenCode_code_edit"
+                type="text"
+                defaultValue={currentCode.code}
+                onChange={(event) => {
+                  currentCode.code = event.target.value;
+                  saveCode();
+                }}
+              />
+            )}
           </div>
-        ) : (
-          <textarea
-            className="chosenCode_code_edit"
-            type="text"
-            defaultValue={currentCode.code}
-            onChange={(event) => {
-              currentCode.code = event.target.value;
-              saveCode();
-            }}
-          />
-        )}
-      </div>
+        </>
+      )}
     </>
   );
 }

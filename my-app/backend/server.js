@@ -83,7 +83,6 @@ mongoose
         } else {
           socket.emit("edit_mood", [true, socket.id]);
         }
-        console.log(clientsConnections);
       });
 
       // send the code the 'student' write to the other sockets
@@ -94,7 +93,6 @@ mongoose
       // user leave the page- -1connection
       socket.on("remove_client", (data) => {
         clientsConnections[data.roomIndex]--;
-        console.log(clientsConnections);
       });
 
       socket.on("disconnect", () => {
