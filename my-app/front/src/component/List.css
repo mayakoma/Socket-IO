@@ -10,4 +10,9 @@
 h1 {
   margin: 2rem;
   text-align: center;
+  flex: 80%;
+}
+.list_header {
+  display: flex;
+  flex-direction: row;
 }

@@ -1,18 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { io } from "socket.io-client";
 
 import LoadingSpinner from "./component/LoadingSpinner";
 import ChosenCode from "./component/ChosenCode";
-
 import List from "./component/List";
+import { AuthContext } from "./context/auth-context";
+import LoginForm from "./component/LoginForm";
 import "./App.css";
 
 const socket = io.connect("http://localhost:5000"); // client-socket
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [list, setList] = useState([]);
+  const auth = useContext(AuthContext);
+
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+  }, []);
+
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+  }, []);
 
   const getList = async function () {
     setIsLoading(true);
@@ -29,22 +40,28 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      {isLoading ? (
-        <LoadingSpinner asOverlay />
-      ) : (
-        <div className="App">
-          <Routes>
-            <Route path="/" exact element={<List items={[list, socket]} />} />
-            <Route
-              path="/code/:codeId/:i"
-              exact
-              element={<ChosenCode socket={socket} data={list} />}
-            />
-          </Routes>
-        </div>
-      )}
-    </Router>
+    <AuthContext.Provider
+      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+    >
+      <Router>
+        {isLoading ? (
+          <LoadingSpinner asOverlay />
+        ) : (
+          <div className="App">
+            <LoginForm />
+
+            <Routes>
+              <Route path="/" exact element={<List items={[list, socket]} />} />
+              <Route
+                path="/code/:codeId/:i"
+                exact
+                element={<ChosenCode socket={socket} data={list} />}
+              />
+            </Routes>
+          </div>
+        )}
+      </Router>
+    </AuthContext.Provider>
   );
 }
 

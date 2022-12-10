@@ -1,16 +1,31 @@
-import React from "react";
+import React, { useContext } from "react";
 import CodeBlock from "./CodeBlock";
-
+import { AuthContext } from "../context/auth-context";
 import "./List.css";
 
 function List(props) {
+  const logoutHandler = function () {
+    auth.logout();
+  };
+  const auth = useContext(AuthContext);
   return (
-    <div className="list_conteiner">
-      <h1> Choose code block </h1>
-      {props.items[0].map((c, i) => {
-        return <CodeBlock data={c} socket={props.items[1]} index={i} />;
-      })}
-    </div>
+    <>
+      {auth.isLoggedIn && (
+        <>
+          <div className="list_conteiner">
+            <div className="list_header">
+              <h1> Choose code block </h1>
+              <button className="app_logoutBtn" onClick={logoutHandler}>
+                logout
+              </button>
+            </div>
+            {props.items[0].map((c, i) => {
+              return <CodeBlock data={c} socket={props.items[1]} index={i} />;
+            })}
+          </div>
+        </>
+      )}
+    </>
   );
 }
 
