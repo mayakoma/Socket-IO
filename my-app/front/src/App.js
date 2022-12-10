@@ -19,6 +19,7 @@ function App() {
         setList(data.list);
       });
   };
+  //  when the page loaded asked for the code  list from the server
   useEffect(() => {
     getList();
   }, []);

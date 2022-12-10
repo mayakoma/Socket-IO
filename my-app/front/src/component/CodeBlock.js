@@ -5,6 +5,7 @@ import hljs from "highlight.js";
 import "./CodeBlock.css";
 
 function CodeBlock(props) {
+  //when user chose code block- the server get the inpormation  which room the user chose.
   const join_room = () => {
     props.socket.emit("join_code", [props.data.id, props.index]);
   };
@@ -19,7 +20,6 @@ function CodeBlock(props) {
         <div className="codeBlock_title">
           <h4>{props.data.title}</h4>
         </div>
-
         <div className="codeBlock_code">
           <pre>
             <code className="language-c">{props.data.code} </code>
@@ -29,4 +29,5 @@ function CodeBlock(props) {
     </Link>
   );
 }
+
 export default CodeBlock;

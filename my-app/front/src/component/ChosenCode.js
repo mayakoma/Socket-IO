@@ -6,15 +6,15 @@ import "../../node_modules/highlight.js/styles/base16/circus.css";
 import "./ChosenCode.css";
 
 function ChosenCode(props) {
-  // hljs.highlightAll();
-  const indexCode = useParams().codeId;
-  const indexRoom = useParams().i;
+  const indexCode = useParams().codeId; //code Id
+  const indexRoom = useParams().i; // room number
   const [editMode, setEditMode] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [currentCode, setCurrentCode] = useState("");
   const [receiveCode, setReceiveCode] = useState("");
   const [editTxt, setEditTxt] = useState("edit");
 
+  // get the code's details from the server
   const getList = async function (index) {
     fetch(`http://localhost:5000/code/get/${index}`)
       .then((res) => (res.ok ? res.json() : { currentCode: "" }))
@@ -23,7 +23,7 @@ function ChosenCode(props) {
         setReceiveCode(data.code.code);
       });
   };
-
+  // when the page loaded asked for the code's details
   useEffect(() => {
     getList(indexCode);
     hljs.highlightAll();
@@ -56,6 +56,7 @@ function ChosenCode(props) {
         room: indexCode,
         code: receiveCode,
       };
+      // when the student finish the lesson, return to the original code
       await props.socket.emit("send_code", data);
     }
     setEditMode(!editMode);
@@ -71,6 +72,8 @@ function ChosenCode(props) {
       await props.socket.emit("send_code", data);
     }
   };
+
+  // when press on back btn the client leave the page- -1 connection
   const removeClient = async () => {
     await props.socket.emit("remove_client", {
       roomId: indexCode,
