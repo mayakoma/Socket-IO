@@ -85,7 +85,7 @@ mongoose
         }
       });
 
-      // send the code the 'student' write to the other sockets
+      // send the code that the 'student' write to the other sockets
       socket.on("send_code", (data) => {
         socket.to(data.room).emit("receive_code", data);
       });
