@@ -1,0 +1,17 @@
+.App {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(10px + 2vmin);
+  color: #000;
+}
+
+.App-link {
+  text-decoration: none;
+}
