@@ -27,15 +27,11 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route
-            path="/"
-            exact
-            element={<List key="2" items={[list, socket]} />}
-          />
+          <Route path="/" exact element={<List items={[list, socket]} />} />
           <Route
             path="/code/:codeId/:i"
             exact
-            element={<ChosenCode key="1" socket={socket} data={list} />}
+            element={<ChosenCode socket={socket} data={list} />}
           />
         </Routes>
       </div>

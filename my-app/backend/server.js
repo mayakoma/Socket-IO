@@ -16,7 +16,7 @@ const mongoose = require("mongoose");
 const HttpError = require("./model/httpError");
 const codeRoute = require("./routes/code-route");
 const { Server } = require("socket.io");
-
+let clientsConnections = new Array().fill(0);
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -65,12 +65,34 @@ mongoose
       console.log(`c connected ${socket.id} `);
 
       socket.on("join_code", (data) => {
-        socket.join(data);
-        console.log(`user with ID ${socket.id} joined code-room ${data}`);
+        [room, index] = data;
+        socket.join(room);
+        console.log(`user with ID ${socket.id} joined code-room ${room}`);
+
+        if (
+          Number.isNaN(clientsConnections[index]) ||
+          !clientsConnections[index]
+        ) {
+          clientsConnections[index] = 0;
+        }
+        clientsConnections[index]++;
+        if (clientsConnections[index] === 1) {
+          socket.emit("edit_mood", [false, socket.id]);
+        } else {
+          socket.emit("edit_mood", [true, socket.id]);
+        }
+        console.log(clientsConnections);
       });
+
       socket.on("send_code", (data) => {
         socket.to(data.room).emit("receive_code", data);
       });
+
+      socket.on("remove_client", (data) => {
+        clientsConnections[data.roomIndex]--;
+        console.log(clientsConnections);
+      });
+
       socket.on("disconnect", () => {
         console.log(`c disconnected ${socket.id} `);
       });

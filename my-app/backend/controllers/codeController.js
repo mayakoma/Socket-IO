@@ -77,8 +77,45 @@ const editCode = async function (req, res, next) {
 
   res.status(200).json({ message: "update" });
 };
+/*
+const changeClientsNum = async function (req, res, next) {
+  const { codeId, action } = req.body;
+
+  let code;
+  try {
+    code = await Code.findById(codeId);
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find the code.",
+      500
+    );
+    return next(error);
+  }
+  if (!code) {
+    res.status(404).send("Could not find the code.");
+    return;
+  }
+
+  let newClients;
+
+  if (action) {
+    newClients = code.numberOfClients + 1;
+  } else newClients = code.numberOfClients - 1;
+  try {
+    await code.update({ numberOfClients: newClients });
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not update the clients.",
+      500
+    );
+    return next(error);
+  }
+  res.status(200).json({ clients: newClients });
+};
+*/
 
 exports.editCode = editCode;
 exports.getCode = getCode;
 exports.getListCode = getListCode;
 exports.addCode = addCode;
+// exports.changeClientsNum = changeClientsNum;
