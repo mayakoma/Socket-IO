@@ -1,0 +1,8 @@
+{
+  "env": {
+    "MONGO_USER": "mayakoma",
+    "MONGO_PASSWORD": "mayakoma7",
+    "MONGO_DB": "code",
+    "NODE_ENV": "production"
+  }
+}

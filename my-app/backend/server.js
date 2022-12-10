@@ -4,9 +4,12 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
+const helmet = require("helmet");
+const compression = require("compression");
 
 const HttpError = require("./model/httpError");
 const codeRoute = require("./routes/code-route");
+const userRoute = require("./routes/user-route");
 
 const app = express();
 const server = http.createServer(app);
@@ -20,7 +23,10 @@ const io = new Server(server, {
 let clientsConnections = new Array().fill(0);
 
 mongoose.set("strictQuery", false);
+app.use(helmet());
+app.use(compression());
 app.use(cors());
+
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
@@ -34,6 +40,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/code", codeRoute);
+app.use("/user", userRoute);
 
 //  If the route is not found
 app.use((req, res, next) => {
@@ -51,11 +58,10 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://mayakoma:mayakoma7@cluster0.wkzoen0.mongodb.net/code?retryWrites=true&w=majority"
+    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.wkzoen0.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`
   )
   .then(() => {
-    server.listen(5000, () => console.log("listen  port 5000"));
-
+    server.listen(process.env.PORT || 5000);
     // msg when user connected
     io.on("connection", (socket) => {
       console.log(`c connected ${socket.id} `);
