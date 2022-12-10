@@ -87,16 +87,16 @@ function ChosenCode(props) {
 
   return (
     <>
-      {isLoading ? (
-        <LoadingSpinner asOverlay />
-      ) : (
-        <>
-          <Link to="/">
-            <button className="chosenCode_backBtn" onClick={removeClient}>
-              back
-            </button>
-          </Link>
-          <div className="chosenCode">
+      <Link to="/">
+        <button className="chosenCode_backBtn" onClick={removeClient}>
+          back
+        </button>
+      </Link>
+      <div className="chosenCode">
+        {isLoading ? (
+          <LoadingSpinner asOverlay />
+        ) : (
+          <>
             <div className="chosenCode_detailes">
               <h2 className="chosenCode_title">{` ${currentCode.title}`}</h2>
               {canEdit ? (
@@ -105,7 +105,6 @@ function ChosenCode(props) {
                 </button>
               ) : null}
             </div>
-
             {!editMode ? (
               <div className="chosenCode_code">
                 <pre>{receiveCode}</pre>
@@ -121,9 +120,9 @@ function ChosenCode(props) {
                 }}
               />
             )}
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </>
   );
 }
