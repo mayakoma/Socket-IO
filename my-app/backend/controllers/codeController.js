@@ -1,6 +1,7 @@
 const HttpError = require("../model/httpError");
 const Code = require("../model/code");
 
+//add code to db - for my using.
 const addCode = async (req, res, next) => {
   const { title, code } = req.body;
   const createCode = new Code({
@@ -16,6 +17,8 @@ const addCode = async (req, res, next) => {
   }
   res.status(201).json({ code: createCode.toObject({ getters: true }) });
 };
+
+// get the list
 const getListCode = async (req, res, next) => {
   let listCode;
   try {
@@ -30,6 +33,8 @@ const getListCode = async (req, res, next) => {
 
   res.json({ list: listCode.map((code) => code.toObject({ getters: true })) });
 };
+
+// get code by id
 const getCode = async function (req, res, next) {
   const codeId = req.params.id;
   let existsCode;
@@ -49,6 +54,8 @@ const getCode = async function (req, res, next) {
   }
   res.status(201).json({ code: existsCode.toObject({ getters: true }) });
 };
+
+// save the code - I didn't use it.
 const editCode = async function (req, res, next) {
   const { id, newCode } = req.body;
   let prevCode;
@@ -77,42 +84,6 @@ const editCode = async function (req, res, next) {
 
   res.status(200).json({ message: "update" });
 };
-/*
-const changeClientsNum = async function (req, res, next) {
-  const { codeId, action } = req.body;
-
-  let code;
-  try {
-    code = await Code.findById(codeId);
-  } catch (err) {
-    const error = new HttpError(
-      "Something went wrong, could not find the code.",
-      500
-    );
-    return next(error);
-  }
-  if (!code) {
-    res.status(404).send("Could not find the code.");
-    return;
-  }
-
-  let newClients;
-
-  if (action) {
-    newClients = code.numberOfClients + 1;
-  } else newClients = code.numberOfClients - 1;
-  try {
-    await code.update({ numberOfClients: newClients });
-  } catch (err) {
-    const error = new HttpError(
-      "Something went wrong, could not update the clients.",
-      500
-    );
-    return next(error);
-  }
-  res.status(200).json({ clients: newClients });
-};
-*/
 
 exports.editCode = editCode;
 exports.getCode = getCode;

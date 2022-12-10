@@ -7,6 +7,5 @@ router.get("/get/:id", codeController.getCode);
 router.get("/getList", codeController.getListCode);
 router.post("/edit", codeController.editCode);
 router.post("/add", codeController.addCode);
-// router.post("/changeClients", codeController.changeClientsNum);
 
 module.exports = router;
