@@ -7,5 +7,5 @@ The student can edit. </br>
 The teacher sees the student's code while writing. </br>
 
 <h3>Using: react, node.js, express, socket.io, socket.io-client, mongoDB, mongoose, hightlight.js </h3>
-<Link to='https://www.linkedin.com/in/maya-koma-821179235/'> My LinkedIn </Link>
+<a href='https://www.linkedin.com/in/maya-koma-821179235/'> My LinkedIn </a>
 </p>
