@@ -19,7 +19,7 @@ const LoginForm = function () {
         password: data.get("password"),
       }),
     };
-    fetch("http://localhost:5000/user/login", requestOption)
+    fetch("https://moveo-project-maya.herokuapp.com/user/login", requestOption)
       .then((res) => (res.ok ? res.json() : { resData: "" }))
       .then((data) => {
         console.log(data);
