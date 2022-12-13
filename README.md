@@ -21,7 +21,7 @@ Using:
 <li>socket.io-client</li>
 <li>mongoDB</li>
 <li> mongoose</li>
-<li> hightlight.js /li>
+<li> hightlight.js </li>
 </ul>
 </h4>
 <a href='https://www.linkedin.com/in/maya-koma-821179235/'> My LinkedIn </a>
