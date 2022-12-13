@@ -11,6 +11,8 @@ https://user-images.githubusercontent.com/94007582/206842925-aa77afe7-829d-4f67-
 
 <h3>
 Using:
+</h3>
+<h4>
 <ul>
 <li> react </li> 
 <li>node.js </li>
@@ -21,6 +23,6 @@ Using:
 <li> mongoose</li>
 <li> hightlight.js /li>
 </ul>
-</h3>
+</h4>
 <a href='https://www.linkedin.com/in/maya-koma-821179235/'> My LinkedIn </a>
 </p>
