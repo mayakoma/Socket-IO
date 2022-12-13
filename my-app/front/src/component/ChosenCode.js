@@ -19,7 +19,7 @@ function ChosenCode(props) {
   // get the code's details from the server
   const getList = async function (index) {
     setIsLoading(true);
-    fetch(`http://localhost:5000/code/get/${index}`)
+    fetch(`https://moveo-project-maya.herokuapp.com/code/get/${index}`)
       .then((res) => (res.ok ? res.json() : { currentCode: "" }))
       .then((data) => {
         setCurrentCode(data.code);
