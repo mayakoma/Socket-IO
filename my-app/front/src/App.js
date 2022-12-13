@@ -9,7 +9,7 @@ import { AuthContext } from "./context/auth-context";
 import LoginForm from "./component/LoginForm";
 import "./App.css";
 
-const socket = io.connect("http://localhost:5000"); // client-socket
+const socket = io.connect("https://moveo-project-maya.herokuapp.com"); // client-socket
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,7 +27,7 @@ function App() {
 
   const getList = async function () {
     setIsLoading(true);
-    fetch("http://localhost:5000/code/getList")
+    fetch("https://moveo-project-maya.herokuapp.com/code/getList")
       .then((res) => (res.ok ? res.json() : { list: [] }))
       .then((data) => {
         setList(data.list);
